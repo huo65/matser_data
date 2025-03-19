@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xidian.master_data.mapper.PartsMasterMapper">
+
+    <resultMap id="BaseResultMap" type="cn.xidian.master_data.model.entity.PartsMaster">
+            <id property="partId" column="part_id" jdbcType="VARCHAR"/>
+            <result property="partName" column="part_name" jdbcType="VARCHAR"/>
+            <result property="partEnglishName" column="part_english_name" jdbcType="VARCHAR"/>
+            <result property="isAuxiliaryMaterial" column="is_auxiliary_material" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        part_id,part_name,part_english_name,
+        is_auxiliary_material
+    </sql>
+</mapper>
