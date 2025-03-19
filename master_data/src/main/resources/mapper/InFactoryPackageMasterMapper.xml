@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xidian.master_data.mapper.InFactoryPackageMasterMapper">
+
+    <resultMap id="BaseResultMap" type="cn.xidian.master_data.model.entity.InFactoryPackageMaster">
+            <id property="partId" column="part_id" jdbcType="VARCHAR"/>
+            <result property="packageType" column="package_type" jdbcType="VARCHAR"/>
+            <result property="snp" column="snp" jdbcType="INTEGER"/>
+            <result property="length" column="length" jdbcType="INTEGER"/>
+            <result property="width" column="width" jdbcType="INTEGER"/>
+            <result property="height" column="height" jdbcType="INTEGER"/>
+            <result property="isInFactoryRepack" column="is_in_factory_repack" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        part_id,package_type,snp,
+        length,width,height,
+        is_in_factory_repack
+    </sql>
+</mapper>
