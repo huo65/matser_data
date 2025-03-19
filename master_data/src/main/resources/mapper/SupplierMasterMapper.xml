@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xidian.master_data.mapper.SupplierMasterMapper">
+
+    <resultMap id="BaseResultMap" type="cn.xidian.master_data.model.entity.SupplierMaster">
+            <id property="supplierCode" column="supplier_code" jdbcType="VARCHAR"/>
+            <result property="supplierName" column="supplier_name" jdbcType="VARCHAR"/>
+            <result property="supplierAddress" column="supplier_address" jdbcType="VARCHAR"/>
+            <result property="deliveryTime" column="delivery_time" jdbcType="INTEGER"/>
+            <result property="inFactoryDeliveryMode" column="in_factory_delivery_mode" jdbcType="VARCHAR"/>
+            <result property="deliveryIntervalTime" column="delivery_interval_time" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        supplier_code,supplier_name,supplier_address,
+        delivery_time,in_factory_delivery_mode,delivery_interval_time
+    </sql>
+</mapper>
