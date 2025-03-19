@@ -131,7 +131,6 @@ public class LogisticsMasterController {
         String sortOrder = logisticsMasterQueryRequest.getSortOrder();
 
         String partId = logisticsMasterQueryRequest.getPartId();
-//        TODO 确认是这个？
         Integer isExternalPurchase = logisticsMasterQueryRequest.getIsExternalPurchase();
         QueryWrapper<LogisticsMaster> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(isExternalPurchase != null, "is_external_purchase", isExternalPurchase);
