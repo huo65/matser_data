@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xidian.master_data.mapper.ProcurementMasterMapper">
+
+    <resultMap id="BaseResultMap" type="cn.xidian.master_data.model.entity.ProcurementMaster">
+            <id property="supplierCode" column="supplier_code" jdbcType="VARCHAR"/>
+            <id property="partId" column="part_id" jdbcType="VARCHAR"/>
+            <result property="productionCompletionTime" column="production_completion_time" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        supplier_code,part_id,production_completion_time
+    </sql>
+</mapper>
