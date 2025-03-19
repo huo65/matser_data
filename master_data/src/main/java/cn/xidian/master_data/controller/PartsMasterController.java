@@ -134,8 +134,8 @@ public class PartsMasterController {
         String partName = partsMasterQueryRequest.getPartName();
 
         QueryWrapper< PartsMaster> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like(StringUtils.isNotBlank(partId), "partId", partId)
-                .like(StringUtils.isNotBlank(partName), "partName", partName);
+        queryWrapper.like(StringUtils.isNotBlank(partId), "part_id", partId)
+                .like(StringUtils.isNotBlank(partName), "part_name", partName);
         queryWrapper.orderBy(StringUtils.isNotBlank(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC), sortField);
         Page< PartsMaster> partsMasterPage = partsMasterService.page(new Page<>(current, size), queryWrapper);
 
