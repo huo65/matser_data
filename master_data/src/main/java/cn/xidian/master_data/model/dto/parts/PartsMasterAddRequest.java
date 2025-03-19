@@ -1,4 +1,4 @@
-package cn.xidian.master_data.model.dto;
+package cn.xidian.master_data.model.dto.parts;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @TableName parts_master
  */
 @Data
-public class PartsMasterUpdateRequest implements Serializable {
+public class PartsMasterAddRequest implements Serializable {
     /**
      * 零件号: 零件的唯一识别码
      */

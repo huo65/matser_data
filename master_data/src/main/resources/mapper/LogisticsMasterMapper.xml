@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xidian.master_data.mapper.LogisticsMasterMapper">
+
+    <resultMap id="BaseResultMap" type="cn.xidian.master_data.model.entity.LogisticsMaster">
+            <id property="partId" column="part_id" jdbcType="VARCHAR"/>
+            <result property="isLargeItem" column="is_large_item" jdbcType="TINYINT"/>
+            <result property="isExternalPurchase" column="is_external_purchase" jdbcType="TINYINT"/>
+            <result property="weight" column="weight" jdbcType="DOUBLE"/>
+            <result property="internalLogisticsMode" column="internal_logistics_mode" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        part_id,is_large_item,is_external_purchase,
+        weight,internal_logistics_mode
+    </sql>
+</mapper>

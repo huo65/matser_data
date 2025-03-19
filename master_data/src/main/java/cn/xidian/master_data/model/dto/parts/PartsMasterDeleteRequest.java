@@ -1,4 +1,4 @@
-package cn.xidian.master_data.model.dto;
+package cn.xidian.master_data.model.dto.parts;
 
 import lombok.Data;
 

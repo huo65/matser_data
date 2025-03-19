@@ -1,6 +1,5 @@
-package cn.xidian.master_data.model.dto;
+package cn.xidian.master_data.model.dto.parts;
 
-import cn.xidian.master_data.common.PageRequest;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,7 +10,7 @@ import java.io.Serializable;
  * @TableName parts_master
  */
 @Data
-public class PartsMasterQueryRequest extends PageRequest implements Serializable {
+public class PartsMasterUpdateRequest implements Serializable {
     /**
      * 零件号: 零件的唯一识别码
      */
@@ -22,5 +21,14 @@ public class PartsMasterQueryRequest extends PageRequest implements Serializable
      */
     private String partName;
 
+    /**
+     * 零件英文名称
+     */
+    private String partEnglishName;
+
+    /**
+     * 是否辅料: 标识是否为辅助材料
+     */
+    private Integer isAuxiliaryMaterial;
 
 }
