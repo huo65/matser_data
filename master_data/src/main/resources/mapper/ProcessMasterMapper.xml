@@ -12,6 +12,7 @@
             <result property="workshop" column="workshop" jdbcType="VARCHAR"/>
             <result property="line" column="line" jdbcType="VARCHAR"/>
             <result property="consumptionAmount" column="consumption_amount" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">

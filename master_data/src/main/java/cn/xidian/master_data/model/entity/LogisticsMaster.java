@@ -1,10 +1,11 @@
 package cn.xidian.master_data.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
+import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import lombok.Data;
 
 /**
@@ -45,6 +46,10 @@ public class LogisticsMaster implements Serializable {
     @TableField(value = "internal_logistics_mode")
     private String internalLogisticsMode;
 
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
+
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

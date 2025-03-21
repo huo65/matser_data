@@ -12,6 +12,7 @@
             <result property="width" column="width" jdbcType="INTEGER"/>
             <result property="height" column="height" jdbcType="INTEGER"/>
             <result property="isInFactoryRepack" column="is_in_factory_repack" jdbcType="TINYINT"/>
+            <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">

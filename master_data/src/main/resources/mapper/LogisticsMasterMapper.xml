@@ -10,6 +10,7 @@
             <result property="isExternalPurchase" column="is_external_purchase" jdbcType="TINYINT"/>
             <result property="weight" column="weight" jdbcType="DOUBLE"/>
             <result property="internalLogisticsMode" column="internal_logistics_mode" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">

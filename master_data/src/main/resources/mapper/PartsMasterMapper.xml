@@ -9,6 +9,7 @@
             <result property="partName" column="part_name" jdbcType="VARCHAR"/>
             <result property="partEnglishName" column="part_english_name" jdbcType="VARCHAR"/>
             <result property="isAuxiliaryMaterial" column="is_auxiliary_material" jdbcType="TINYINT"/>
+            <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">

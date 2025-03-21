@@ -11,6 +11,7 @@
             <result property="deliveryTime" column="delivery_time" jdbcType="INTEGER"/>
             <result property="inFactoryDeliveryMode" column="in_factory_delivery_mode" jdbcType="VARCHAR"/>
             <result property="deliveryIntervalTime" column="delivery_interval_time" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">

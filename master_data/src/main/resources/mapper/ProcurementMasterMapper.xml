@@ -8,6 +8,7 @@
             <id property="supplierCode" column="supplier_code" jdbcType="VARCHAR"/>
             <id property="partId" column="part_id" jdbcType="VARCHAR"/>
             <result property="productionCompletionTime" column="production_completion_time" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">

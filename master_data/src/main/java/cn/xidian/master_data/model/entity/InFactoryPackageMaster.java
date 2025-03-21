@@ -1,14 +1,16 @@
 package cn.xidian.master_data.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
+import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import lombok.Data;
 
 /**
  * 
+ * @author huozj
  * @TableName in_factory_package_master
  */
 @Data
@@ -56,6 +58,10 @@ public class InFactoryPackageMaster implements Serializable {
     @TableField(value = "is_in_factory_repack")
     private Integer isInFactoryRepack;
 
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
+
+    @Serial
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

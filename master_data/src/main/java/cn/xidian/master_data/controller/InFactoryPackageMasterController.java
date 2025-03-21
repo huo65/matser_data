@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
  * @author huozj
  */
 @RestController
-@RequestMapping("/inFactoryTransportPackage")
+@RequestMapping("/inFactoryPackage")
 @Slf4j
 public class InFactoryPackageMasterController {
 
