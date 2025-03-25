@@ -40,23 +40,27 @@ public class ProcurementMasterController {
      * 创建
      *
      * @param procurementMasterAddRequest 采购主数据添加请求
-     * @return {@link BaseResponse}<{@link Long}>
+     * @return {@link BaseResponse}<{@link Boolean}>
      */
     @PostMapping
-    public BaseResponse<Long> addProcurementMaster(@RequestBody ProcurementMasterAddRequest procurementMasterAddRequest) {
+    public BaseResponse<Boolean> addProcurementMaster(@RequestBody ProcurementMasterAddRequest procurementMasterAddRequest) {
         if (procurementMasterAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         ProcurementMaster procurementMaster = new ProcurementMaster();
         BeanUtils.copyProperties(procurementMasterAddRequest, procurementMaster);
+        if (procurementMasterService.selectByMultiId(procurementMaster) != null){
+            throw new BusinessException(ErrorCode.REPEAT_ERROR);
+        }
+        boolean result;
         try {
-            boolean result = procurementMasterService.save(procurementMaster);
+            result = procurementMasterService.save(procurementMaster);
         } catch (Exception e) {
             log.error("添加失败", e);
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
 
-        return ResultUtils.success("添加成功");
+        return ResultUtils.success(result,"添加成功");
     }
 
     /**
@@ -120,6 +124,9 @@ public class ProcurementMasterController {
 //        TODO 修改不能涉及主键
         ProcurementMaster procurementMaster = new ProcurementMaster();
         BeanUtils.copyProperties(procurementMasterUpdateRequest, procurementMaster);
+        if (procurementMasterService.selectByMultiId(procurementMaster) == null){
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
         boolean result = procurementMasterService.updateByMultiId(procurementMaster);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);

@@ -40,23 +40,27 @@ public class LogisticsMasterController {
      * 创建
      *
      * @param logisticsMasterAddRequest 物流主数据添加请求
-     * @return {@link BaseResponse}<{@link Long}>
+     * @return {@link BaseResponse}<{@link Boolean}>
      */
     @PostMapping
-    public BaseResponse<Long> addLogisticsMaster(@RequestBody LogisticsMasterAddRequest logisticsMasterAddRequest) {
+    public BaseResponse<Boolean> addLogisticsMaster(@RequestBody LogisticsMasterAddRequest logisticsMasterAddRequest) {
         if (logisticsMasterAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         LogisticsMaster logisticsMaster = new LogisticsMaster();
         BeanUtils.copyProperties(logisticsMasterAddRequest, logisticsMaster);
+        if (logisticsMasterService.getById(logisticsMaster) != null){
+            throw new BusinessException(ErrorCode.REPEAT_ERROR);
+        }
+        boolean result;
         try {
-            boolean result = logisticsMasterService.save(logisticsMaster);
+            result = logisticsMasterService.save(logisticsMaster);
         } catch (Exception e) {
             log.error("添加失败", e);
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
 
-        return ResultUtils.success("添加成功");
+        return ResultUtils.success(result,"添加成功");
     }
 
     /**
@@ -107,6 +111,9 @@ public class LogisticsMasterController {
         }
         LogisticsMaster logisticsMaster = new LogisticsMaster();
         BeanUtils.copyProperties(logisticsMasterUpdateRequest, logisticsMaster);
+        if (logisticsMasterService.getById(logisticsMaster) == null){
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
         boolean result = logisticsMasterService.updateById(logisticsMaster);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);

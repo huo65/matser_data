@@ -40,23 +40,27 @@ public class SupplierMasterController {
      * 创建
      *
      * @param supplierMasterAddRequest 供应商主数据添加请求
-     * @return {@link BaseResponse}<{@link Long}>
+     * @return {@link BaseResponse}<{@link Boolean}>
      */
     @PostMapping
-    public BaseResponse<Long> addSupplierMaster(@RequestBody SupplierMasterAddRequest supplierMasterAddRequest) {
+    public BaseResponse<Boolean> addSupplierMaster(@RequestBody SupplierMasterAddRequest supplierMasterAddRequest) {
         if (supplierMasterAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         SupplierMaster supplierMaster = new SupplierMaster();
         BeanUtils.copyProperties(supplierMasterAddRequest, supplierMaster);
+        if (supplierMasterService.getById(supplierMaster) != null){
+            throw new BusinessException(ErrorCode.REPEAT_ERROR);
+        }
+        boolean result;
         try {
-            boolean result = supplierMasterService.save(supplierMaster);
+            result = supplierMasterService.save(supplierMaster);
         } catch (Exception e) {
             log.error("添加失败", e);
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
 
-        return ResultUtils.success("添加成功");
+        return ResultUtils.success(result,"添加成功");
     }
 
     /**
@@ -107,6 +111,9 @@ public class SupplierMasterController {
         }
         SupplierMaster supplierMaster = new SupplierMaster();
         BeanUtils.copyProperties(supplierMasterUpdateRequest, supplierMaster);
+       if (supplierMasterService.getById(supplierMaster) == null){
+           throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+       }
         boolean result = supplierMasterService.updateById(supplierMaster);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);

@@ -40,23 +40,26 @@ public class InFactoryPackageMasterController {
      * 创建
      *
      * @param inFactoryTransportPackageMasterAddRequest 入场包装信息主数据添加请求
-     * @return {@link BaseResponse}<{@link Long}>
+     * @return {@link BaseResponse}<{@link Boolean}>
      */
     @PostMapping
-    public BaseResponse<Long> addInFactoryPackageMaster(@RequestBody InFactoryPackageMasterAddRequest inFactoryTransportPackageMasterAddRequest) {
+    public BaseResponse<Boolean> addInFactoryPackageMaster(@RequestBody InFactoryPackageMasterAddRequest inFactoryTransportPackageMasterAddRequest) {
         if (inFactoryTransportPackageMasterAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         InFactoryPackageMaster inFactoryTransportPackageMaster = new InFactoryPackageMaster();
         BeanUtils.copyProperties(inFactoryTransportPackageMasterAddRequest, inFactoryTransportPackageMaster);
+        if (inFactoryTransportPackageMasterService.getById(inFactoryTransportPackageMaster) != null){
+            throw new BusinessException(ErrorCode.REPEAT_ERROR);
+        }
+        boolean result;
         try {
-            boolean result = inFactoryTransportPackageMasterService.save(inFactoryTransportPackageMaster);
+            result = inFactoryTransportPackageMasterService.save(inFactoryTransportPackageMaster);
         } catch (Exception e) {
-            log.error("添加失败", e);
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
 
-        return ResultUtils.success("添加成功");
+        return ResultUtils.success(result,"添加成功");
     }
 
     /**
@@ -107,6 +110,9 @@ public class InFactoryPackageMasterController {
         }
         InFactoryPackageMaster inFactoryTransportPackageMaster = new  InFactoryPackageMaster();
         BeanUtils.copyProperties(inFactoryTransportPackageMasterUpdateRequest, inFactoryTransportPackageMaster);
+        if (inFactoryTransportPackageMasterService.getById(inFactoryTransportPackageMaster) == null){
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
         boolean result = inFactoryTransportPackageMasterService.updateById(inFactoryTransportPackageMaster);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);

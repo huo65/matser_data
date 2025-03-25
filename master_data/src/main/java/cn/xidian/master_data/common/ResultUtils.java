@@ -17,6 +17,9 @@ public class ResultUtils {
     public static <T> BaseResponse<T> success(String message) {
         return new BaseResponse<>(2000, null, message);
     }
+    public static <T> BaseResponse<T> success(T data, String message) {
+        return new BaseResponse<>(2000, data, message);
+    }
 
     /**
      * 错误

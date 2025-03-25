@@ -15,6 +15,10 @@ public enum ErrorCode {
      */
     PARAMS_ERROR(40000, "请求参数错误"),
     /**
+     * 重复插入
+     */
+     REPEAT_ERROR(40000, "数据已存在"),
+    /**
      * 请求数据不存在
      */
     NOT_FOUND_ERROR(40400, "请求数据不存在"),

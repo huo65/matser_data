@@ -40,23 +40,26 @@ public class PartsMasterController {
      * 创建
      *
      * @param partsMasterAddRequest 零件主数据添加请求
-     * @return {@link BaseResponse}<{@link Long}>
+     * @return {@link BaseResponse}<{@link Boolean}>
      */
     @PostMapping
-    public BaseResponse<Long> addPartsMaster(@RequestBody PartsMasterAddRequest partsMasterAddRequest) {
+    public BaseResponse<Boolean> addPartsMaster(@RequestBody PartsMasterAddRequest partsMasterAddRequest) {
         if (partsMasterAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         PartsMaster partsMaster = new PartsMaster();
         BeanUtils.copyProperties(partsMasterAddRequest, partsMaster);
+        if (partsMasterService.getById(partsMaster) != null){
+            throw new BusinessException(ErrorCode.REPEAT_ERROR);
+        }
+        boolean result;
         try {
-            boolean result = partsMasterService.save(partsMaster);
+            result = partsMasterService.save(partsMaster);
         } catch (Exception e) {
-            log.error("添加失败", e);
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
 
-        return ResultUtils.success("添加成功");
+        return ResultUtils.success(result,"添加成功");
     }
 
     /**
@@ -107,6 +110,9 @@ public class PartsMasterController {
         }
         PartsMaster partsMaster = new  PartsMaster();
         BeanUtils.copyProperties(partsMasterUpdateRequest, partsMaster);
+        if (partsMasterService.getById(partsMaster) == null){
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
         boolean result = partsMasterService.updateById(partsMaster);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);

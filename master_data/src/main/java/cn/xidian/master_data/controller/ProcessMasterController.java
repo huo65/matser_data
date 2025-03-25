@@ -40,23 +40,27 @@ public class ProcessMasterController {
      * 创建
      *
      * @param processMasterAddRequest 工艺主数据添加请求
-     * @return {@link BaseResponse}<{@link Long}>
+     * @return {@link BaseResponse}<{@link Boolean}>
      */
     @PostMapping
-    public BaseResponse<Long> addProcessMaster(@RequestBody ProcessMasterAddRequest processMasterAddRequest) {
+    public BaseResponse<Boolean> addProcessMaster(@RequestBody ProcessMasterAddRequest processMasterAddRequest) {
         if (processMasterAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         ProcessMaster processMaster = new ProcessMaster();
         BeanUtils.copyProperties(processMasterAddRequest, processMaster);
+        if (processMasterService.selectByMultiId(processMaster) != null){
+            throw new BusinessException(ErrorCode.REPEAT_ERROR);
+        }
+        boolean result;
         try {
-            boolean result = processMasterService.save(processMaster);
+            result = processMasterService.save(processMaster);
         } catch (Exception e) {
             log.error("添加失败", e);
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
 
-        return ResultUtils.success("添加成功");
+        return ResultUtils.success(result,"添加成功");
     }
 
     /**
@@ -121,6 +125,9 @@ public class ProcessMasterController {
 //        TODO 修改不能涉及主键
         ProcessMaster processMaster = new ProcessMaster();
         BeanUtils.copyProperties(processMasterUpdateRequest, processMaster);
+        if (processMasterService.selectByMultiId(processMaster) == null){
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
         boolean result = processMasterService.updateByMultiId(processMaster);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
