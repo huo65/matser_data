@@ -80,7 +80,7 @@ public class SupplierMasterController {
         if (id == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        if (procurementMasterService.getBySupplierCode(id) != null){
+        if (!procurementMasterService.getBySupplierCode(id).isEmpty()){
             throw new BusinessException(ErrorCode.SUPPLIER_CONFIGURED);
         }
         boolean result = supplierMasterService.removeById(id);
@@ -101,7 +101,7 @@ public class SupplierMasterController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         for (String id : deleteRequest.getSupplierCodes()){
-            if (procurementMasterService.getBySupplierCode(id) != null){
+            if (!procurementMasterService.getBySupplierCode(id).isEmpty()){
                 throw new BusinessException(ErrorCode.SUPPLIER_CONFIGURED);
             }
         }

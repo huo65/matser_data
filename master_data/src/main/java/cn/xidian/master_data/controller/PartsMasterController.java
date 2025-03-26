@@ -85,7 +85,7 @@ public class PartsMasterController {
         if (id == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        if (logisticsMasterService.getById(id) != null ||  inFactoryPackageMasterService.getById(id) != null || processMasterService.getByPartId(id) !=null || procurementMasterService.getByPartId(id) != null){
+        if (logisticsMasterService.getById(id) != null ||  inFactoryPackageMasterService.getById(id) != null || !processMasterService.getByPartId(id).isEmpty() || !procurementMasterService.getByPartId(id).isEmpty()){
             throw new BusinessException(ErrorCode.PART_CONFIGURED);
         }
 
@@ -107,7 +107,7 @@ public class PartsMasterController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         for (String id : deleteRequest.getPartIds()){
-            if (logisticsMasterService.getById(id) != null ||  inFactoryPackageMasterService.getById(id) != null || processMasterService.getByPartId(id) !=null || procurementMasterService.getByPartId(id) != null){
+            if (logisticsMasterService.getById(id) != null ||  inFactoryPackageMasterService.getById(id) != null || !processMasterService.getByPartId(id).isEmpty() || !procurementMasterService.getByPartId(id).isEmpty()){
                 throw new BusinessException(ErrorCode.PART_CONFIGURED);
             }
         }
