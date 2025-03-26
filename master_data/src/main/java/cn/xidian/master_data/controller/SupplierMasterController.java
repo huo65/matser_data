@@ -50,7 +50,7 @@ public class SupplierMasterController {
         if (ObjectUtils.anyNull(supplierMasterAddRequest, supplierMasterAddRequest.getSupplierCode())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        if (supplierMasterAddRequest.getSupplierCode().length() != 10 || !StringUtils.isNumeric(supplierMasterAddRequest.getSupplierCode())) {
+        if (supplierMasterAddRequest.getSupplierCode().length() != 6 || !StringUtils.isNumeric(supplierMasterAddRequest.getSupplierCode())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         SupplierMaster supplierMaster = new SupplierMaster();
