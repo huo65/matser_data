@@ -10,7 +10,7 @@ import cn.xidian.master_data.model.dto.parts.PartsMasterDeleteRequest;
 import cn.xidian.master_data.model.dto.parts.PartsMasterQueryRequest;
 import cn.xidian.master_data.model.dto.parts.PartsMasterUpdateRequest;
 import cn.xidian.master_data.model.entity.PartsMaster;
-import cn.xidian.master_data.service.PartsMasterService;
+import cn.xidian.master_data.service.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
@@ -32,6 +32,15 @@ public class PartsMasterController {
 
     @Resource
     private PartsMasterService partsMasterService;
+    @Resource
+    private ProcessMasterService processMasterService;
+    @Resource
+    private LogisticsMasterService logisticsMasterService;
+    @Resource
+    private ProcurementMasterService procurementMasterService;
+    @Resource
+    private InFactoryPackageMasterService inFactoryPackageMasterService;
+
     
     // region 增删改查
 
@@ -44,7 +53,10 @@ public class PartsMasterController {
      */
     @PostMapping
     public BaseResponse<Boolean> addPartsMaster(@RequestBody PartsMasterAddRequest partsMasterAddRequest) {
-        if (partsMasterAddRequest == null) {
+        if (partsMasterAddRequest == null || partsMasterAddRequest.getPartId() == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        if (partsMasterAddRequest.getPartId().length() != 10 || !StringUtils.isNumeric(partsMasterAddRequest.getPartId())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         PartsMaster partsMaster = new PartsMaster();
@@ -73,6 +85,10 @@ public class PartsMasterController {
         if (id == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+        if (logisticsMasterService.getById(id) != null ||  inFactoryPackageMasterService.getById(id) != null || processMasterService.getByPartId(id) !=null || procurementMasterService.getByPartId(id) != null){
+            throw new BusinessException(ErrorCode.PART_CONFIGURED);
+        }
+
         boolean result = partsMasterService.removeById(id);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
@@ -89,6 +105,11 @@ public class PartsMasterController {
     public BaseResponse<Boolean> deletePartsMaster(@RequestBody PartsMasterDeleteRequest deleteRequest) {
         if(ObjectUtils.anyNull(deleteRequest, deleteRequest.getPartIds()) || deleteRequest.getPartIds().isEmpty() ){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        for (String id : deleteRequest.getPartIds()){
+            if (logisticsMasterService.getById(id) != null ||  inFactoryPackageMasterService.getById(id) != null || processMasterService.getByPartId(id) !=null || procurementMasterService.getByPartId(id) != null){
+                throw new BusinessException(ErrorCode.PART_CONFIGURED);
+            }
         }
         boolean result = partsMasterService.removeByIds(deleteRequest.getPartIds());
         if (!result) {

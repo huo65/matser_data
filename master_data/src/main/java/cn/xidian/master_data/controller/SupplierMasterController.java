@@ -10,6 +10,7 @@ import cn.xidian.master_data.model.dto.supplier.SupplierMasterDeleteRequest;
 import cn.xidian.master_data.model.dto.supplier.SupplierMasterQueryRequest;
 import cn.xidian.master_data.model.dto.supplier.SupplierMasterUpdateRequest;
 import cn.xidian.master_data.model.entity.SupplierMaster;
+import cn.xidian.master_data.service.ProcurementMasterService;
 import cn.xidian.master_data.service.SupplierMasterService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -32,6 +33,8 @@ public class SupplierMasterController {
 
     @Resource
     private SupplierMasterService supplierMasterService;
+    @Resource
+    private ProcurementMasterService procurementMasterService;
     
     // region 增删改查
 
@@ -44,7 +47,10 @@ public class SupplierMasterController {
      */
     @PostMapping
     public BaseResponse<Boolean> addSupplierMaster(@RequestBody SupplierMasterAddRequest supplierMasterAddRequest) {
-        if (supplierMasterAddRequest == null) {
+        if (ObjectUtils.anyNull(supplierMasterAddRequest, supplierMasterAddRequest.getSupplierCode())) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        if (supplierMasterAddRequest.getSupplierCode().length() != 10 || !StringUtils.isNumeric(supplierMasterAddRequest.getSupplierCode())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         SupplierMaster supplierMaster = new SupplierMaster();
@@ -69,10 +75,13 @@ public class SupplierMasterController {
      * @param id      id
      * @return {@link BaseResponse}<{@link String}>
      */
-    @DeleteMapping("{part_id}")
-    public BaseResponse<String> deleteBlogById(@PathVariable("part_id") String id) {
+    @DeleteMapping("{supplier_code}")
+    public BaseResponse<String> deleteBlogById(@PathVariable("supplier_code") String id) {
         if (id == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        if (procurementMasterService.getBySupplierCode(id) != null){
+            throw new BusinessException(ErrorCode.SUPPLIER_CONFIGURED);
         }
         boolean result = supplierMasterService.removeById(id);
         if (!result) {
@@ -90,6 +99,11 @@ public class SupplierMasterController {
     public BaseResponse<Boolean> deleteSupplierMaster(@RequestBody SupplierMasterDeleteRequest deleteRequest) {
         if(ObjectUtils.anyNull(deleteRequest, deleteRequest.getSupplierCodes()) || deleteRequest.getSupplierCodes().isEmpty() ){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        for (String id : deleteRequest.getSupplierCodes()){
+            if (procurementMasterService.getBySupplierCode(id) != null){
+                throw new BusinessException(ErrorCode.SUPPLIER_CONFIGURED);
+            }
         }
         boolean result = supplierMasterService.removeByIds(deleteRequest.getSupplierCodes());
         if (!result) {

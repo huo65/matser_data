@@ -11,6 +11,7 @@ import cn.xidian.master_data.model.dto.logistics.LogisticsMasterQueryRequest;
 import cn.xidian.master_data.model.dto.logistics.LogisticsMasterUpdateRequest;
 import cn.xidian.master_data.model.entity.LogisticsMaster;
 import cn.xidian.master_data.service.LogisticsMasterService;
+import cn.xidian.master_data.service.PartsMasterService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
@@ -32,6 +33,8 @@ public class LogisticsMasterController {
 
     @Resource
     private LogisticsMasterService logisticsMasterService;
+    @Resource
+    private PartsMasterService partsMasterService;
     
     // region 增删改查
 
@@ -44,8 +47,11 @@ public class LogisticsMasterController {
      */
     @PostMapping
     public BaseResponse<Boolean> addLogisticsMaster(@RequestBody LogisticsMasterAddRequest logisticsMasterAddRequest) {
-        if (logisticsMasterAddRequest == null) {
+        if (ObjectUtils.anyNull(logisticsMasterAddRequest, logisticsMasterAddRequest.getPartId())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        if (partsMasterService.getById(logisticsMasterAddRequest.getPartId()) == null){
+            throw new BusinessException(ErrorCode.PART_ID_ERROR);
         }
         LogisticsMaster logisticsMaster = new LogisticsMaster();
         BeanUtils.copyProperties(logisticsMasterAddRequest, logisticsMaster);

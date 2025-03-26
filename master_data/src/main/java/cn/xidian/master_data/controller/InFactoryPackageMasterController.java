@@ -11,6 +11,7 @@ import cn.xidian.master_data.model.dto.InFactoryPackage.InFactoryPackageMasterQu
 import cn.xidian.master_data.model.dto.InFactoryPackage.InFactoryPackageMasterUpdateRequest;
 import cn.xidian.master_data.model.entity.InFactoryPackageMaster;
 import cn.xidian.master_data.service.InFactoryPackageMasterService;
+import cn.xidian.master_data.service.PartsMasterService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
@@ -32,6 +33,8 @@ public class InFactoryPackageMasterController {
 
     @Resource
     private InFactoryPackageMasterService inFactoryTransportPackageMasterService;
+    @Resource
+    private PartsMasterService partsMasterService;
     
     // region 增删改查
 
@@ -44,8 +47,11 @@ public class InFactoryPackageMasterController {
      */
     @PostMapping
     public BaseResponse<Boolean> addInFactoryPackageMaster(@RequestBody InFactoryPackageMasterAddRequest inFactoryTransportPackageMasterAddRequest) {
-        if (inFactoryTransportPackageMasterAddRequest == null) {
+        if (inFactoryTransportPackageMasterAddRequest == null ||inFactoryTransportPackageMasterAddRequest.getPartId() == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        if (partsMasterService.getById(inFactoryTransportPackageMasterAddRequest.getPartId()) == null){
+            throw new BusinessException(ErrorCode.PART_ID_ERROR);
         }
         InFactoryPackageMaster inFactoryTransportPackageMaster = new InFactoryPackageMaster();
         BeanUtils.copyProperties(inFactoryTransportPackageMasterAddRequest, inFactoryTransportPackageMaster);

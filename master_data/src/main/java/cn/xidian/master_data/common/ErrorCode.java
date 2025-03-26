@@ -5,6 +5,7 @@ import lombok.Getter;
 /**
  * 错误码
  */
+@Getter
 public enum ErrorCode {
     /**
      * 成功
@@ -17,7 +18,7 @@ public enum ErrorCode {
     /**
      * 重复插入
      */
-     REPEAT_ERROR(40000, "数据已存在"),
+     REPEAT_ERROR(40010, "数据已存在"),
     /**
      * 请求数据不存在
      */
@@ -33,7 +34,25 @@ public enum ErrorCode {
     /**
      * 操作错误
      */
-    OPERATION_ERROR(50001, "操作失败");
+    OPERATION_ERROR(50010, "操作失败"),
+    /**
+     * 零件号错误
+     */
+    PART_ID_ERROR(50020,"零件号不存在"),
+    /**
+     * 零件已配置
+     */
+    PART_CONFIGURED(50030,"零件已配置无法删除"),
+    /**
+     * 供应商已配置
+     */
+    SUPPLIER_CONFIGURED(50040,"供应商已配置无法删除"),
+    /**
+     * 供应商代码错误
+     */
+    SUPPLIER_CODE_ERROR(50050,"供应商代码不存在");
+
+
 
     /**
      * 状态码
@@ -48,13 +67,6 @@ public enum ErrorCode {
     ErrorCode(int code, String message) {
         this.code = code;
         this.message = message;
-    }
-    public int getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
     }
 
 

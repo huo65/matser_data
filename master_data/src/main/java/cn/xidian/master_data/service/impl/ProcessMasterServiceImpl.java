@@ -1,11 +1,14 @@
 package cn.xidian.master_data.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.xidian.master_data.model.entity.ProcessMaster;
 import cn.xidian.master_data.service.ProcessMasterService;
 import cn.xidian.master_data.mapper.ProcessMasterMapper;
 import com.github.jeffreyning.mybatisplus.service.MppServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
 * @author huozj
@@ -16,6 +19,12 @@ import org.springframework.stereotype.Service;
 public class ProcessMasterServiceImpl extends MppServiceImpl<ProcessMasterMapper, ProcessMaster>
     implements ProcessMasterService{
 
+    @Override
+    public List<ProcessMaster> getByPartId(String partId) {
+        QueryWrapper<ProcessMaster> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("part_id", partId);
+        return list(queryWrapper);
+    }
 }
 
 

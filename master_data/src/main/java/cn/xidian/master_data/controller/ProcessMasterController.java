@@ -10,6 +10,7 @@ import cn.xidian.master_data.model.dto.process.ProcessMasterDeleteRequest;
 import cn.xidian.master_data.model.dto.process.ProcessMasterQueryRequest;
 import cn.xidian.master_data.model.dto.process.ProcessMasterUpdateRequest;
 import cn.xidian.master_data.model.entity.ProcessMaster;
+import cn.xidian.master_data.service.PartsMasterService;
 import cn.xidian.master_data.service.ProcessMasterService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -32,6 +33,8 @@ public class ProcessMasterController {
 
     @Resource
     private ProcessMasterService processMasterService;
+    @Resource
+    private PartsMasterService partsMasterService;
     
     // region 增删改查
 
@@ -44,8 +47,11 @@ public class ProcessMasterController {
      */
     @PostMapping
     public BaseResponse<Boolean> addProcessMaster(@RequestBody ProcessMasterAddRequest processMasterAddRequest) {
-        if (processMasterAddRequest == null) {
+        if (ObjectUtils.anyNull(processMasterAddRequest, processMasterAddRequest.getPartId(), processMasterAddRequest.getVehicleModel(), processMasterAddRequest.getConsumptionPosition())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        if (partsMasterService.getById(processMasterAddRequest.getPartId()) == null){
+            throw new BusinessException(ErrorCode.PART_ID_ERROR);
         }
         ProcessMaster processMaster = new ProcessMaster();
         BeanUtils.copyProperties(processMasterAddRequest, processMaster);

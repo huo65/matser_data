@@ -10,7 +10,10 @@ import cn.xidian.master_data.model.dto.procurement.ProcurementMasterDeleteReques
 import cn.xidian.master_data.model.dto.procurement.ProcurementMasterQueryRequest;
 import cn.xidian.master_data.model.dto.procurement.ProcurementMasterUpdateRequest;
 import cn.xidian.master_data.model.entity.ProcurementMaster;
+import cn.xidian.master_data.model.entity.SupplierMaster;
+import cn.xidian.master_data.service.PartsMasterService;
 import cn.xidian.master_data.service.ProcurementMasterService;
+import cn.xidian.master_data.service.SupplierMasterService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
@@ -32,6 +35,10 @@ public class ProcurementMasterController {
 
     @Resource
     private ProcurementMasterService procurementMasterService;
+    @Resource
+    private SupplierMasterService supplierMasterService;
+    @Resource
+    private PartsMasterService partsMasterService;
     
     // region 增删改查
 
@@ -44,9 +51,16 @@ public class ProcurementMasterController {
      */
     @PostMapping
     public BaseResponse<Boolean> addProcurementMaster(@RequestBody ProcurementMasterAddRequest procurementMasterAddRequest) {
-        if (procurementMasterAddRequest == null) {
+        if (procurementMasterAddRequest == null || procurementMasterAddRequest.getSupplierCode() == null || procurementMasterAddRequest.getPartId() == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+        if (supplierMasterService.getById(procurementMasterAddRequest.getSupplierCode()) == null){
+            throw new BusinessException(ErrorCode.SUPPLIER_CODE_ERROR);
+        }
+        if (partsMasterService.getById(procurementMasterAddRequest.getPartId()) == null){
+            throw new BusinessException(ErrorCode.PART_ID_ERROR);
+        }
+
         ProcurementMaster procurementMaster = new ProcurementMaster();
         BeanUtils.copyProperties(procurementMasterAddRequest, procurementMaster);
         if (procurementMasterService.selectByMultiId(procurementMaster) != null){

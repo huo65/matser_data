@@ -1,10 +1,16 @@
 package cn.xidian.master_data.service.impl;
 
+import cn.xidian.master_data.model.entity.ProcessMaster;
 import cn.xidian.master_data.model.entity.ProcurementMaster;
 import cn.xidian.master_data.service.ProcurementMasterService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.jeffreyning.mybatisplus.service.MppServiceImpl;
 import cn.xidian.master_data.mapper.ProcurementMasterMapper;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
 * @author huozj
@@ -14,7 +20,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProcurementMasterServiceImpl extends MppServiceImpl<ProcurementMasterMapper, ProcurementMaster>
     implements ProcurementMasterService{
+    @Resource
+    private ProcurementMasterMapper procurementMasterMapper;
 
+    @Override
+    public List<ProcurementMaster> getByPartId(String partId) {
+        QueryWrapper<ProcurementMaster> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("part_id", partId);
+        return list(queryWrapper);
+    }
+
+    @Override
+    public List<ProcurementMaster> getBySupplierCode(String supplierCode) {
+        QueryWrapper<ProcurementMaster> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("supplier_code", supplierCode);
+        return list(queryWrapper);
+    }
 }
 
 
