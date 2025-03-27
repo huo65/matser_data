@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.xidian.master_data.model.entity.ProcessMaster;
 import cn.xidian.master_data.service.ProcessMasterService;
 import cn.xidian.master_data.mapper.ProcessMasterMapper;
-import com.github.jeffreyning.mybatisplus.service.MppServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
 * @createDate 2025-03-19 20:33:28
 */
 @Service
-public class ProcessMasterServiceImpl extends MppServiceImpl<ProcessMasterMapper, ProcessMaster>
+public class ProcessMasterServiceImpl extends ServiceImpl<ProcessMasterMapper, ProcessMaster>
     implements ProcessMasterService{
 
     @Override

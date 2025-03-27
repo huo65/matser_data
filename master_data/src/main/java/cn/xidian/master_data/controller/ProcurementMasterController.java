@@ -63,7 +63,7 @@ public class ProcurementMasterController {
 
         ProcurementMaster procurementMaster = new ProcurementMaster();
         BeanUtils.copyProperties(procurementMasterAddRequest, procurementMaster);
-        if (procurementMasterService.selectByMultiId(procurementMaster) != null){
+        if (procurementMasterService.getById(procurementMaster) != null){
             throw new BusinessException(ErrorCode.REPEAT_ERROR);
         }
         boolean result;
@@ -92,7 +92,7 @@ public class ProcurementMasterController {
         ProcurementMaster procurementMaster = new ProcurementMaster();
         procurementMaster.setPartId(partId);
         procurementMaster.setSupplierCode(supplierCode);
-        boolean result = procurementMasterService.deleteByMultiId(procurementMaster);
+        boolean result = procurementMasterService.removeById(procurementMaster);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
@@ -114,7 +114,7 @@ public class ProcurementMasterController {
                 ProcurementMaster procurementMaster = new ProcurementMaster();
                 procurementMaster.setPartId(pair.getPartId());
                 procurementMaster.setSupplierCode(pair.getSupplierCode());
-                procurementMasterService.deleteByMultiId(procurementMaster);
+                procurementMasterService.removeById(procurementMaster);
             }
         } catch (Exception e) {
             log.error("批量删除失败", e);
@@ -138,10 +138,10 @@ public class ProcurementMasterController {
 //        TODO 修改不能涉及主键
         ProcurementMaster procurementMaster = new ProcurementMaster();
         BeanUtils.copyProperties(procurementMasterUpdateRequest, procurementMaster);
-        if (procurementMasterService.selectByMultiId(procurementMaster) == null){
+        if (procurementMasterService.getById(procurementMaster) == null){
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
-        boolean result = procurementMasterService.updateByMultiId(procurementMaster);
+        boolean result = procurementMasterService.updateById(procurementMaster);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }

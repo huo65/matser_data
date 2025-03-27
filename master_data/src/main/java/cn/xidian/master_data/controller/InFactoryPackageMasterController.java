@@ -74,8 +74,8 @@ public class InFactoryPackageMasterController {
      * @param id      id
      * @return {@link BaseResponse}<{@link String}>
      */
-    @DeleteMapping("{part_id}")
-    public BaseResponse<String> deleteBlogById(@PathVariable("part_id") String id) {
+    @DeleteMapping("{id}")
+    public BaseResponse<String> deleteBlogById(@PathVariable("id") String id) {
         if (id == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -93,10 +93,10 @@ public class InFactoryPackageMasterController {
      */
     @PostMapping("/delete")
     public BaseResponse<Boolean> deleteInFactoryPackageMaster(@RequestBody InFactoryPackageMasterDeleteRequest deleteRequest) {
-        if(ObjectUtils.anyNull(deleteRequest, deleteRequest.getPartIds()) || deleteRequest.getPartIds().isEmpty() ){
+        if(ObjectUtils.anyNull(deleteRequest, deleteRequest.getIds()) || deleteRequest.getIds().isEmpty() ){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        boolean result = inFactoryTransportPackageMasterService.removeByIds(deleteRequest.getPartIds());
+        boolean result = inFactoryTransportPackageMasterService.removeByIds(deleteRequest.getIds());
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }

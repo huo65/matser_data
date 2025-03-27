@@ -4,8 +4,8 @@ import cn.xidian.master_data.model.entity.ProcessMaster;
 import cn.xidian.master_data.model.entity.ProcurementMaster;
 import cn.xidian.master_data.service.ProcurementMasterService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.github.jeffreyning.mybatisplus.service.MppServiceImpl;
 import cn.xidian.master_data.mapper.ProcurementMasterMapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ import java.util.List;
 * @createDate 2025-03-19 19:23:28
 */
 @Service
-public class ProcurementMasterServiceImpl extends MppServiceImpl<ProcurementMasterMapper, ProcurementMaster>
+public class ProcurementMasterServiceImpl extends ServiceImpl<ProcurementMasterMapper, ProcurementMaster>
     implements ProcurementMasterService{
     @Resource
     private ProcurementMasterMapper procurementMasterMapper;

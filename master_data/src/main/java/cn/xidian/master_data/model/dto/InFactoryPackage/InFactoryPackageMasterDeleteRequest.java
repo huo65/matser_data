@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 public class InFactoryPackageMasterDeleteRequest implements Serializable {
 
-    private List<String> partIds;
+    private List<Integer> ids;
 
 
 }

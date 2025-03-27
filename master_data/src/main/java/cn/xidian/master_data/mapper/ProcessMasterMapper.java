@@ -2,7 +2,6 @@ package cn.xidian.master_data.mapper;
 
 import cn.xidian.master_data.model.entity.ProcessMaster;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.github.jeffreyning.mybatisplus.base.MppBaseMapper;
 
 /**
 * @author huozj
@@ -10,7 +9,7 @@ import com.github.jeffreyning.mybatisplus.base.MppBaseMapper;
 * @createDate 2025-03-19 20:33:28
 * @Entity cn.xidian.master_data.model.entity.ProcessMaster
 */
-public interface ProcessMasterMapper extends MppBaseMapper<ProcessMaster> {
+public interface ProcessMasterMapper extends BaseMapper<ProcessMaster> {
 
 }
 

@@ -55,7 +55,7 @@ public class ProcessMasterController {
         }
         ProcessMaster processMaster = new ProcessMaster();
         BeanUtils.copyProperties(processMasterAddRequest, processMaster);
-        if (processMasterService.selectByMultiId(processMaster) != null){
+        if (processMasterService.getById(processMaster) != null){
             throw new BusinessException(ErrorCode.REPEAT_ERROR);
         }
         boolean result;
@@ -84,7 +84,7 @@ public class ProcessMasterController {
         processMaster.setPartId(partId);
         processMaster.setVehicleModel(vehicleModel);
         processMaster.setConsumptionPosition(consumptionPosition);
-        boolean result = processMasterService.deleteByMultiId(processMaster);
+        boolean result = processMasterService.removeById(processMaster);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
@@ -107,7 +107,7 @@ public class ProcessMasterController {
                 processMaster.setPartId(pair.getPartId());
                 processMaster.setVehicleModel(pair.getVehicleModel());
                 processMaster.setConsumptionPosition(pair.getConsumptionPosition());
-                processMasterService.deleteByMultiId(processMaster);
+                processMasterService.removeById(processMaster);
             }
         } catch (Exception e) {
             log.error("批量删除失败", e);
@@ -131,10 +131,10 @@ public class ProcessMasterController {
 //        TODO 修改不能涉及主键
         ProcessMaster processMaster = new ProcessMaster();
         BeanUtils.copyProperties(processMasterUpdateRequest, processMaster);
-        if (processMasterService.selectByMultiId(processMaster) == null){
+        if (processMasterService.getById(processMaster) == null){
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
-        boolean result = processMasterService.updateByMultiId(processMaster);
+        boolean result = processMasterService.updateById(processMaster);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }

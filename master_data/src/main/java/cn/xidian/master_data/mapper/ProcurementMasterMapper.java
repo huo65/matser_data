@@ -2,7 +2,7 @@ package cn.xidian.master_data.mapper;
 
 import cn.xidian.master_data.model.entity.ProcurementMaster;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.github.jeffreyning.mybatisplus.base.MppBaseMapper;
+
 
 /**
 * @author huozj
@@ -10,7 +10,7 @@ import com.github.jeffreyning.mybatisplus.base.MppBaseMapper;
 * @createDate 2025-03-19 19:23:28
 * @Entity cn.xidian.master_data.model.entity.ProcurementMaster
 */
-public interface ProcurementMasterMapper extends MppBaseMapper<ProcurementMaster> {
+public interface ProcurementMasterMapper extends BaseMapper<ProcurementMaster> {
 
 }
 

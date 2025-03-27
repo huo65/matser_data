@@ -12,6 +12,7 @@ import java.io.Serializable;
  */
 @Data
 public class InFactoryPackageMasterUpdateRequest implements Serializable {
+    private Integer id;
     /**
      * 零件号: 零件的唯一识别码
      */
