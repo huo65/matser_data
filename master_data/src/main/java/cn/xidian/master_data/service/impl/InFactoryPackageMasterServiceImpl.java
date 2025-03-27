@@ -1,5 +1,6 @@
 package cn.xidian.master_data.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.xidian.master_data.model.entity.InFactoryPackageMaster;
 import cn.xidian.master_data.service.InFactoryPackageMasterService;
@@ -15,6 +16,12 @@ import org.springframework.stereotype.Service;
 public class InFactoryPackageMasterServiceImpl extends ServiceImpl<InFactoryPackageMasterMapper, InFactoryPackageMaster>
     implements InFactoryPackageMasterService{
 
+    @Override
+    public Object getByPartId(String partId) {
+        QueryWrapper<InFactoryPackageMaster> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("part_id", partId);
+        return getOne(queryWrapper);
+    }
 }
 
 

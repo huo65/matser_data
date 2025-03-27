@@ -11,4 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface LogisticsMasterService extends IService<LogisticsMaster> {
 
+    Object getByPartId(String partId);
 }

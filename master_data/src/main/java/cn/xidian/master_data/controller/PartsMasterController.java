@@ -80,8 +80,8 @@ public class PartsMasterController {
      * @param id      id
      * @return {@link BaseResponse}<{@link String}>
      */
-    @DeleteMapping("{part_id}")
-    public BaseResponse<String> deleteBlogById(@PathVariable("part_id") String id) {
+    @DeleteMapping("{id}")
+    public BaseResponse<String> deleteBlogById(@PathVariable("id") String id) {
         if (id == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -103,15 +103,20 @@ public class PartsMasterController {
      */
     @PostMapping("/delete")
     public BaseResponse<Boolean> deletePartsMaster(@RequestBody PartsMasterDeleteRequest deleteRequest) {
-        if(ObjectUtils.anyNull(deleteRequest, deleteRequest.getPartIds()) || deleteRequest.getPartIds().isEmpty() ){
+        if(ObjectUtils.anyNull(deleteRequest, deleteRequest.getIds()) || deleteRequest.getIds().isEmpty() ){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        for (String id : deleteRequest.getPartIds()){
-            if (logisticsMasterService.getById(id) != null ||  inFactoryPackageMasterService.getById(id) != null || !processMasterService.getByPartId(id).isEmpty() || !procurementMasterService.getByPartId(id).isEmpty()){
+
+        for (Integer id : deleteRequest.getIds()){
+            if (partsMasterService.getById(id) == null){
+                throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+            }
+            String partId = partsMasterService.getById(id).getPartId();
+            if (logisticsMasterService.getByPartId(partId) != null ||  inFactoryPackageMasterService.getByPartId(partId) != null || !processMasterService.getByPartId(partId).isEmpty() || !procurementMasterService.getByPartId(partId).isEmpty()){
                 throw new BusinessException(ErrorCode.PART_CONFIGURED);
             }
         }
-        boolean result = partsMasterService.removeByIds(deleteRequest.getPartIds());
+        boolean result = partsMasterService.removeByIds(deleteRequest.getIds());
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
