@@ -20,7 +20,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public BaseResponse<?> businessExceptionHandler(BusinessException e) {
-        log.error("businessException: " + e.getMessage(), e);
         return ResultUtils.error(e.getCode(), e.getMessage());
     }
     @ExceptionHandler(DuplicateKeyException.class)
