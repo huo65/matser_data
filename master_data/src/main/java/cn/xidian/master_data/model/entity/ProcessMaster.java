@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
-import com.github.jeffreyning.mybatisplus.anno.MppMultiId;
 import lombok.Data;
 
 /**
@@ -17,23 +15,25 @@ import lombok.Data;
 @Data
 public class ProcessMaster implements Serializable {
     /**
+     * 非业务主键ID
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
+    /**
      * 零件号：零件唯一标识
      */
-    @MppMultiId
     @TableField(value = "part_id")
     private String partId;
 
     /**
      * 车型: 每个车型的零件消耗不一样，如果不配置则认为所有车型消耗量相同。也可以以通配符形式简化配置
      */
-    @MppMultiId
     @TableField(value = "vehicle_model")
     private String vehicleModel;
 
     /**
      * 消耗工位: 以后需要跟JIS基座里，每个模型的“唯一标识”字段对应上
      */
-    @MppMultiId
     @TableField(value = "consumption_position")
     private String consumptionPosition;
 

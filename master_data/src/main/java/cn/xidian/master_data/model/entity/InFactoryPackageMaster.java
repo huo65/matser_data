@@ -17,9 +17,14 @@ import lombok.Data;
 @TableName(value ="in_factory_package_master")
 public class InFactoryPackageMaster implements Serializable {
     /**
+     * 非业务主键ID
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
+    /**
      * 零件号: 零件的唯一识别码
      */
-    @TableId(value = "part_id")
+    @TableField(value = "part_id")
     private String partId;
 
     /**

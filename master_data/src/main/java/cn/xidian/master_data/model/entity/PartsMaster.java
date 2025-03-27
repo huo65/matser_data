@@ -1,9 +1,7 @@
 package cn.xidian.master_data.model.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -17,9 +15,13 @@ import lombok.Data;
 @Data
 public class PartsMaster implements Serializable {
     /**
+     * 非业务主键ID
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
+    /**
      * 零件号: 零件的唯一识别码
      */
-    @TableId
     private String partId;
 
     /**

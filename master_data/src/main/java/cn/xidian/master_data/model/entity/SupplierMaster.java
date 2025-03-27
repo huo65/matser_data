@@ -9,15 +9,21 @@ import lombok.Data;
 
 /**
  * 说明：JIS基座开发完成后，供应商主数据以JIS基座中配置的为准
+ * @author huozj
  * @TableName supplier_master
  */
 @TableName(value ="supplier_master")
 @Data
 public class SupplierMaster implements Serializable {
     /**
+     * 非业务主键ID
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
+    /**
      * 供应商代码
      */
-    @TableId(value = "supplier_code")
+    @TableField(value = "supplier_code")
     private String supplierCode;
 
     /**

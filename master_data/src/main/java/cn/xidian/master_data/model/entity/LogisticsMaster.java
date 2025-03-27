@@ -17,9 +17,14 @@ import lombok.Data;
 @Data
 public class LogisticsMaster implements Serializable {
     /**
+     * 非业务主键ID
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
+    /**
      * 零件号: 零件唯一标识
      */
-    @TableId(value = "part_id")
+    @TableField(value = "part_id")
     private String partId;
 
     /**
