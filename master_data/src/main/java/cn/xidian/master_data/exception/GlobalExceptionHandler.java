@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(DuplicateKeyException.class)
     public BaseResponse<?> duplicateExceptionHandler(DuplicateKeyException e) {
-        return ResultUtils.error(ErrorCode.REPEAT_ERROR, e.getMessage());
+        return ResultUtils.error(ErrorCode.REPEAT_ERROR,"数据重复错误");
     }
 
     @ExceptionHandler(RuntimeException.class)
