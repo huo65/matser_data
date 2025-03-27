@@ -13,11 +13,5 @@ import java.util.List;
 @Data
 public class ProcessMasterDeleteRequest implements Serializable {
 
-    private List<Pair<String,String,String>> ids;
-    @Data
-    public static class Pair<A, B, C> {
-        private A partId;
-        private B vehicleModel;
-        private C consumptionPosition;
-    }
+    private List<Integer> ids;
 }

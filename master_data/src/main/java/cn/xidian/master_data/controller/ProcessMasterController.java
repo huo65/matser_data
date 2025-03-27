@@ -50,19 +50,15 @@ public class ProcessMasterController {
         if (ObjectUtils.anyNull(processMasterAddRequest, processMasterAddRequest.getPartId(), processMasterAddRequest.getVehicleModel(), processMasterAddRequest.getConsumptionPosition())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        if (partsMasterService.getById(processMasterAddRequest.getPartId()) == null){
+        if (partsMasterService.getByPartId(processMasterAddRequest.getPartId()) == null){
             throw new BusinessException(ErrorCode.PART_ID_ERROR);
         }
         ProcessMaster processMaster = new ProcessMaster();
         BeanUtils.copyProperties(processMasterAddRequest, processMaster);
-        if (processMasterService.getById(processMaster) != null){
-            throw new BusinessException(ErrorCode.REPEAT_ERROR);
-        }
         boolean result;
         try {
             result = processMasterService.save(processMaster);
         } catch (Exception e) {
-            log.error("添加失败", e);
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
 
@@ -72,20 +68,17 @@ public class ProcessMasterController {
     /**
      * 删除工艺主数据通过主键
      *
-     * @param partId    partId
+     * @param id    id
      * @return {@link BaseResponse}<{@link String}>
      */
-    @DeleteMapping("{PartId}/{vehicle_model}/{consumption_position}")
-    public BaseResponse<String> deleteBlogById(@PathVariable("PartId") String partId, @PathVariable("vehicle_model") String vehicleModel, @PathVariable("consumption_position") String consumptionPosition) {
-        if (partId == null || vehicleModel == null || consumptionPosition == null) {
+    @DeleteMapping("{id}")
+    public BaseResponse<String> deleteBlogById(@PathVariable("id") String id) {
+        if (id == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        ProcessMaster processMaster = new ProcessMaster();
-        processMaster.setPartId(partId);
-        processMaster.setVehicleModel(vehicleModel);
-        processMaster.setConsumptionPosition(consumptionPosition);
-        boolean result = processMasterService.removeById(processMaster);
-        if (!result) {
+        try{
+            processMasterService.removeById(id);
+        }catch (Exception e){
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
         return ResultUtils.success("删除成功");
@@ -102,15 +95,10 @@ public class ProcessMasterController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         try {
-            for (ProcessMasterDeleteRequest.Pair<String, String,String> pair : deleteRequest.getIds()){
-                ProcessMaster processMaster = new ProcessMaster();
-                processMaster.setPartId(pair.getPartId());
-                processMaster.setVehicleModel(pair.getVehicleModel());
-                processMaster.setConsumptionPosition(pair.getConsumptionPosition());
-                processMasterService.removeById(processMaster);
+            for (Integer id : deleteRequest.getIds()){
+                processMasterService.removeById(id);
             }
         } catch (Exception e) {
-            log.error("批量删除失败", e);
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
 
@@ -125,14 +113,16 @@ public class ProcessMasterController {
      */
     @PutMapping
     public BaseResponse<Boolean> updateProcessMaster(@RequestBody ProcessMasterUpdateRequest processMasterUpdateRequest) {
-        if (ObjectUtils.anyNull(processMasterUpdateRequest, processMasterUpdateRequest.getPartId(), processMasterUpdateRequest.getVehicleModel(), processMasterUpdateRequest.getConsumptionPosition())) {
+        if (ObjectUtils.anyNull(processMasterUpdateRequest, processMasterUpdateRequest.getId(), processMasterUpdateRequest.getPartId(), processMasterUpdateRequest.getVehicleModel(), processMasterUpdateRequest.getConsumptionPosition())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-//        TODO 修改不能涉及主键
         ProcessMaster processMaster = new ProcessMaster();
         BeanUtils.copyProperties(processMasterUpdateRequest, processMaster);
-        if (processMasterService.getById(processMaster) == null){
+        if (processMasterService.getById(processMaster.getId()) == null){
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        if (partsMasterService.getByPartId(processMasterUpdateRequest.getPartId()) == null){
+            throw new BusinessException(ErrorCode.PART_ID_ERROR);
         }
         boolean result = processMasterService.updateById(processMaster);
         if (!result) {
