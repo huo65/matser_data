@@ -5,6 +5,7 @@ import cn.xidian.master_data.common.BaseResponse;
 import cn.xidian.master_data.common.ErrorCode;
 import cn.xidian.master_data.common.ResultUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -21,6 +22,10 @@ public class GlobalExceptionHandler {
     public BaseResponse<?> businessExceptionHandler(BusinessException e) {
         log.error("businessException: " + e.getMessage(), e);
         return ResultUtils.error(e.getCode(), e.getMessage());
+    }
+    @ExceptionHandler(DuplicateKeyException.class)
+    public BaseResponse<?> duplicateExceptionHandler(DuplicateKeyException e) {
+        return ResultUtils.error(ErrorCode.REPEAT_ERROR, e.getMessage());
     }
 
     @ExceptionHandler(RuntimeException.class)
