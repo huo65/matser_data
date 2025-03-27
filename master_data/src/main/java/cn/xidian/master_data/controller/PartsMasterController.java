@@ -85,7 +85,8 @@ public class PartsMasterController {
         if (id == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        if (logisticsMasterService.getById(id) != null ||  inFactoryPackageMasterService.getById(id) != null || !processMasterService.getByPartId(id).isEmpty() || !procurementMasterService.getByPartId(id).isEmpty()){
+        String partId = partsMasterService.getById(id).getPartId();
+        if (logisticsMasterService.getByPartId(partId) != null ||  inFactoryPackageMasterService.getByPartId(partId) != null || !processMasterService.getByPartId(partId).isEmpty() || !procurementMasterService.getByPartId(partId).isEmpty()){
             throw new BusinessException(ErrorCode.PART_CONFIGURED);
         }
 
