@@ -136,6 +136,10 @@ public class SupplierMasterController {
         if (supplierMasterService.getBySupplierCode(supplierMaster.getSupplierCode()) != null){
             throw new BusinessException(ErrorCode.REPEAT_ERROR);
         }
+        String supplierCode = supplierMasterService.getById(supplierMaster.getId()).getSupplierCode();
+        if (!procurementMasterService.getBySupplierCode(supplierCode).isEmpty()){
+            throw new BusinessException(ErrorCode.SUPPLIER_CONFIGURED);
+        }
         boolean result = supplierMasterService.updateById(supplierMaster);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);

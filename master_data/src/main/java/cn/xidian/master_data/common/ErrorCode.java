@@ -42,11 +42,11 @@ public enum ErrorCode {
     /**
      * 零件已配置
      */
-    PART_CONFIGURED(50030,"零件已配置无法删除"),
+    PART_CONFIGURED(50030,"零件已配置"),
     /**
      * 供应商已配置
      */
-    SUPPLIER_CONFIGURED(50040,"供应商已配置无法删除"),
+    SUPPLIER_CONFIGURED(50040,"供应商已配置"),
     /**
      * 供应商代码错误
      */

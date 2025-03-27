@@ -143,6 +143,10 @@ public class PartsMasterController {
         if (partsMasterUpdateRequest.getPartId().length() != 10 || !StringUtils.isNumeric(partsMasterUpdateRequest.getPartId())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+        String partId = partsMasterService.getById(partsMaster).getPartId();
+        if (logisticsMasterService.getByPartId(partId) != null ||  inFactoryPackageMasterService.getByPartId(partId) != null || !processMasterService.getByPartId(partId).isEmpty() || !procurementMasterService.getByPartId(partId).isEmpty()){
+            throw new BusinessException(ErrorCode.PART_CONFIGURED);
+        }
         boolean result = partsMasterService.updateById(partsMaster);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
