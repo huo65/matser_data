@@ -1,5 +1,6 @@
 package cn.xidian.master_data.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import cn.xidian.master_data.model.entity.SupplierMaster;
 import cn.xidian.master_data.service.SupplierMasterService;
@@ -15,6 +16,12 @@ import org.springframework.stereotype.Service;
 public class SupplierMasterServiceImpl extends ServiceImpl<SupplierMasterMapper, SupplierMaster>
     implements SupplierMasterService{
 
+    @Override
+    public Object getBySupplierCode(String supplierCode) {
+        QueryWrapper<SupplierMaster> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("supplier_code", supplierCode);
+        return getOne(queryWrapper);
+    }
 }
 
 

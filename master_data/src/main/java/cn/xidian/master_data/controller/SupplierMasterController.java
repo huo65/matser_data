@@ -55,7 +55,7 @@ public class SupplierMasterController {
         }
         SupplierMaster supplierMaster = new SupplierMaster();
         BeanUtils.copyProperties(supplierMasterAddRequest, supplierMaster);
-        if (supplierMasterService.getById(supplierMaster) != null){
+        if (supplierMasterService.getBySupplierCode(supplierMaster.getSupplierCode()) != null){
             throw new BusinessException(ErrorCode.REPEAT_ERROR);
         }
         boolean result;
@@ -75,12 +75,13 @@ public class SupplierMasterController {
      * @param id      id
      * @return {@link BaseResponse}<{@link String}>
      */
-    @DeleteMapping("{supplier_code}")
-    public BaseResponse<String> deleteBlogById(@PathVariable("supplier_code") String id) {
+    @DeleteMapping("{id}")
+    public BaseResponse<String> deleteBlogById(@PathVariable("id") String id) {
         if (id == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        if (!procurementMasterService.getBySupplierCode(id).isEmpty()){
+        String supplierCode = supplierMasterService.getById(id).getSupplierCode();
+        if (!procurementMasterService.getBySupplierCode(supplierCode).isEmpty()){
             throw new BusinessException(ErrorCode.SUPPLIER_CONFIGURED);
         }
         boolean result = supplierMasterService.removeById(id);
@@ -97,15 +98,16 @@ public class SupplierMasterController {
      */
     @PostMapping("/delete")
     public BaseResponse<Boolean> deleteSupplierMaster(@RequestBody SupplierMasterDeleteRequest deleteRequest) {
-        if(ObjectUtils.anyNull(deleteRequest, deleteRequest.getSupplierCodes()) || deleteRequest.getSupplierCodes().isEmpty() ){
+        if(ObjectUtils.anyNull(deleteRequest, deleteRequest.getIds()) || deleteRequest.getIds().isEmpty() ){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        for (String id : deleteRequest.getSupplierCodes()){
-            if (!procurementMasterService.getBySupplierCode(id).isEmpty()){
+        for (Integer id : deleteRequest.getIds()){
+            String supplierCode = supplierMasterService.getById(id).getSupplierCode();
+            if (!procurementMasterService.getBySupplierCode(supplierCode).isEmpty()){
                 throw new BusinessException(ErrorCode.SUPPLIER_CONFIGURED);
             }
         }
-        boolean result = supplierMasterService.removeByIds(deleteRequest.getSupplierCodes());
+        boolean result = supplierMasterService.removeByIds(deleteRequest.getIds());
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
@@ -128,6 +130,12 @@ public class SupplierMasterController {
        if (supplierMasterService.getById(supplierMaster) == null){
            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
        }
+        if (supplierMasterUpdateRequest.getSupplierCode().length() != 6 || !StringUtils.isNumeric(supplierMasterUpdateRequest.getSupplierCode())) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        if (supplierMasterService.getBySupplierCode(supplierMaster.getSupplierCode()) != null){
+            throw new BusinessException(ErrorCode.REPEAT_ERROR);
+        }
         boolean result = supplierMasterService.updateById(supplierMaster);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);

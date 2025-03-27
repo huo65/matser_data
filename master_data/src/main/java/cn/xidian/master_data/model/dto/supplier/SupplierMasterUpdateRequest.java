@@ -7,10 +7,12 @@ import java.io.Serializable;
 
 /**
  * 说明：JIS基座开发完成后，供应商主数据以JIS基座中配置的为准
+ * @author huozj
  */
 @TableName(value ="supplier_master")
 @Data
 public class SupplierMasterUpdateRequest implements Serializable {
+    private Integer id;
     /**
      * 供应商代码
      */

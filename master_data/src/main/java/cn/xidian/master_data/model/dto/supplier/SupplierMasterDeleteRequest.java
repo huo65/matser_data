@@ -16,6 +16,6 @@ public class SupplierMasterDeleteRequest implements Serializable {
     /**
      * 供应商代码
      */
-    private List<String> supplierCodes;
+    private List<Integer> ids;
 
 }
