@@ -139,6 +139,9 @@ public class PartsMasterController {
         if (partsMasterService.getById(partsMaster) == null){
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
+        if (partsMasterUpdateRequest.getPartId().length() != 10 || !StringUtils.isNumeric(partsMasterUpdateRequest.getPartId())) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
         boolean result = partsMasterService.updateById(partsMaster);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
