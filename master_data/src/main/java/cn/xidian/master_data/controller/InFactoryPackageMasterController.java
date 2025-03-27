@@ -50,12 +50,12 @@ public class InFactoryPackageMasterController {
         if (inFactoryTransportPackageMasterAddRequest == null ||inFactoryTransportPackageMasterAddRequest.getPartId() == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        if (partsMasterService.getById(inFactoryTransportPackageMasterAddRequest.getPartId()) == null){
+        if (partsMasterService.getByPartId(inFactoryTransportPackageMasterAddRequest.getPartId()) == null){
             throw new BusinessException(ErrorCode.PART_ID_ERROR);
         }
         InFactoryPackageMaster inFactoryTransportPackageMaster = new InFactoryPackageMaster();
         BeanUtils.copyProperties(inFactoryTransportPackageMasterAddRequest, inFactoryTransportPackageMaster);
-        if (inFactoryTransportPackageMasterService.getById(inFactoryTransportPackageMaster) != null){
+        if (inFactoryTransportPackageMasterService.getByPartId(inFactoryTransportPackageMaster.getPartId()) != null){
             throw new BusinessException(ErrorCode.REPEAT_ERROR);
         }
         boolean result;
@@ -119,6 +119,13 @@ public class InFactoryPackageMasterController {
         if (inFactoryTransportPackageMasterService.getById(inFactoryTransportPackageMaster) == null){
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
+        if (inFactoryTransportPackageMaster.getPartId().length() != 10 || !StringUtils.isNumeric(inFactoryTransportPackageMaster.getPartId())) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        if (partsMasterService.getByPartId(inFactoryTransportPackageMasterUpdateRequest.getPartId()) == null){
+            throw new BusinessException(ErrorCode.PART_ID_ERROR);
+        }
+
         boolean result = inFactoryTransportPackageMasterService.updateById(inFactoryTransportPackageMaster);
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);

@@ -12,6 +12,7 @@ import java.io.Serializable;
 
 @Data
 public class LogisticsMasterUpdateRequest implements Serializable {
+    private Integer id;
     /**
      * 零件号: 零件唯一标识
      */

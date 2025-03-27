@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 public class LogisticsMasterDeleteRequest implements Serializable {
 
-    private List<String> partIds;
+    private List<Integer> ids;
 
 
 }

@@ -3,6 +3,7 @@ package cn.xidian.master_data.service.impl;
 import cn.xidian.master_data.mapper.PartsMasterMapper;
 import cn.xidian.master_data.model.entity.PartsMaster;
 import cn.xidian.master_data.service.PartsMasterService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,12 @@ import org.springframework.stereotype.Service;
 public class PartsMasterServiceImpl extends ServiceImpl<PartsMasterMapper, PartsMaster>
     implements PartsMasterService {
 
+    @Override
+    public Object getByPartId(String partId) {
+        QueryWrapper<PartsMaster> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("part_id", partId);
+        return getOne(queryWrapper);
+    }
 }
 
 

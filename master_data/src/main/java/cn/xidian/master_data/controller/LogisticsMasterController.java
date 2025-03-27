@@ -50,19 +50,18 @@ public class LogisticsMasterController {
         if (ObjectUtils.anyNull(logisticsMasterAddRequest, logisticsMasterAddRequest.getPartId())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        if (partsMasterService.getById(logisticsMasterAddRequest.getPartId()) == null){
+        if (partsMasterService.getByPartId(logisticsMasterAddRequest.getPartId()) == null){
             throw new BusinessException(ErrorCode.PART_ID_ERROR);
         }
         LogisticsMaster logisticsMaster = new LogisticsMaster();
         BeanUtils.copyProperties(logisticsMasterAddRequest, logisticsMaster);
-        if (logisticsMasterService.getById(logisticsMaster) != null){
+        if (logisticsMasterService.getByPartId(logisticsMaster.getPartId()) != null){
             throw new BusinessException(ErrorCode.REPEAT_ERROR);
         }
         boolean result;
         try {
             result = logisticsMasterService.save(logisticsMaster);
         } catch (Exception e) {
-            log.error("添加失败", e);
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
 
@@ -75,8 +74,8 @@ public class LogisticsMasterController {
      * @param id      id
      * @return {@link BaseResponse}<{@link String}>
      */
-    @DeleteMapping("{part_id}")
-    public BaseResponse<String> deleteBlogById(@PathVariable("part_id") String id) {
+    @DeleteMapping("{id}")
+    public BaseResponse<String> deleteBlogById(@PathVariable("id") String id) {
         if (id == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -94,10 +93,10 @@ public class LogisticsMasterController {
      */
     @PostMapping("/delete")
     public BaseResponse<Boolean> deleteLogisticsMaster(@RequestBody LogisticsMasterDeleteRequest deleteRequest) {
-        if(ObjectUtils.anyNull(deleteRequest, deleteRequest.getPartIds()) || deleteRequest.getPartIds().isEmpty() ){
+        if(ObjectUtils.anyNull(deleteRequest, deleteRequest.getIds()) || deleteRequest.getIds().isEmpty() ){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        boolean result = logisticsMasterService.removeByIds(deleteRequest.getPartIds());
+        boolean result = logisticsMasterService.removeByIds(deleteRequest.getIds());
         if (!result) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
@@ -119,6 +118,12 @@ public class LogisticsMasterController {
         BeanUtils.copyProperties(logisticsMasterUpdateRequest, logisticsMaster);
         if (logisticsMasterService.getById(logisticsMaster) == null){
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        if (logisticsMaster.getPartId().length() != 10 || !StringUtils.isNumeric(logisticsMaster.getPartId())) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        if (partsMasterService.getByPartId(logisticsMasterUpdateRequest.getPartId()) == null){
+            throw new BusinessException(ErrorCode.PART_ID_ERROR);
         }
         boolean result = logisticsMasterService.updateById(logisticsMaster);
         if (!result) {
