@@ -54,23 +54,19 @@ public class ProcurementMasterController {
         if (procurementMasterAddRequest == null || procurementMasterAddRequest.getSupplierCode() == null || procurementMasterAddRequest.getPartId() == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        if (supplierMasterService.getById(procurementMasterAddRequest.getSupplierCode()) == null){
+        if (supplierMasterService.getBySupplierCode(procurementMasterAddRequest.getSupplierCode()) == null){
             throw new BusinessException(ErrorCode.SUPPLIER_CODE_ERROR);
         }
-        if (partsMasterService.getById(procurementMasterAddRequest.getPartId()) == null){
+        if (partsMasterService.getByPartId(procurementMasterAddRequest.getPartId()) == null){
             throw new BusinessException(ErrorCode.PART_ID_ERROR);
         }
 
         ProcurementMaster procurementMaster = new ProcurementMaster();
         BeanUtils.copyProperties(procurementMasterAddRequest, procurementMaster);
-        if (procurementMasterService.getById(procurementMaster) != null){
-            throw new BusinessException(ErrorCode.REPEAT_ERROR);
-        }
         boolean result;
         try {
             result = procurementMasterService.save(procurementMaster);
         } catch (Exception e) {
-            log.error("添加失败", e);
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
 
@@ -80,20 +76,17 @@ public class ProcurementMasterController {
     /**
      * 删除采购主数据通过主键
      *
-     * @param partId    partId
-     * @param supplierCode    supplierCode
+     * @param id    id
      * @return {@link BaseResponse}<{@link String}>
      */
-    @DeleteMapping("{PartId}/{SupplierCode}")
-    public BaseResponse<String> deleteBlogById(@PathVariable("PartId") String partId, @PathVariable("SupplierCode") String supplierCode) {
-        if (partId == null || supplierCode == null) {
+    @DeleteMapping("{id}")
+    public BaseResponse<String> deleteBlogById(@PathVariable("id") String id) {
+        if (id == null ) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        ProcurementMaster procurementMaster = new ProcurementMaster();
-        procurementMaster.setPartId(partId);
-        procurementMaster.setSupplierCode(supplierCode);
-        boolean result = procurementMasterService.removeById(procurementMaster);
-        if (!result) {
+        try{
+            procurementMasterService.removeById(id);
+        }catch (Exception e) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
         return ResultUtils.success("删除成功");
@@ -110,14 +103,10 @@ public class ProcurementMasterController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         try {
-            for (ProcurementMasterDeleteRequest.Pair<String, String> pair : deleteRequest.getIds()){
-                ProcurementMaster procurementMaster = new ProcurementMaster();
-                procurementMaster.setPartId(pair.getPartId());
-                procurementMaster.setSupplierCode(pair.getSupplierCode());
-                procurementMasterService.removeById(procurementMaster);
+            for (Integer id : deleteRequest.getIds()){
+                procurementMasterService.removeById(id);
             }
         } catch (Exception e) {
-            log.error("批量删除失败", e);
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
 
@@ -135,11 +124,16 @@ public class ProcurementMasterController {
         if (ObjectUtils.anyNull(procurementMasterUpdateRequest, procurementMasterUpdateRequest.getPartId(), procurementMasterUpdateRequest.getSupplierCode())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-//        TODO 修改不能涉及主键
         ProcurementMaster procurementMaster = new ProcurementMaster();
         BeanUtils.copyProperties(procurementMasterUpdateRequest, procurementMaster);
         if (procurementMasterService.getById(procurementMaster) == null){
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        if (supplierMasterService.getBySupplierCode(procurementMasterUpdateRequest.getSupplierCode()) == null){
+            throw new BusinessException(ErrorCode.SUPPLIER_CODE_ERROR);
+        }
+        if (partsMasterService.getByPartId(procurementMasterUpdateRequest.getPartId()) == null){
+            throw new BusinessException(ErrorCode.PART_ID_ERROR);
         }
         boolean result = procurementMasterService.updateById(procurementMaster);
         if (!result) {

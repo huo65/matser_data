@@ -15,6 +15,7 @@ import java.io.Serializable;
 @TableName(value ="procurement_master")
 @Data
 public class ProcurementMasterUpdateRequest implements Serializable {
+    private Integer id;
     /**
      * 供应商代码
      */
