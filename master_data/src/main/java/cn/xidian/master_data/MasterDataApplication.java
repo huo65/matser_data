@@ -5,7 +5,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("cn.xidian.master_data.mapper")
 public class MasterDataApplication {
 
     public static void main(String[] args) {
